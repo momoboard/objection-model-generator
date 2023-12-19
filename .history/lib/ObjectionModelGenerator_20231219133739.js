@@ -176,13 +176,11 @@ var ObjectionModelGenerator = function () {
     var credentials = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var dbName = arguments[1];
     var dbKnexObjectPath = arguments[2];
-    var modelNameBuilder = arguments[3];
 
     _classCallCheck(this, ObjectionModelGenerator);
 
     this.dbName = dbName;
     this.dbFile = dbKnexObjectPath;
-    this.modelNameBuilder = modelNameBuilder;
 
     // Initialize knex.
     var knex = (0, _knex2.default)({
@@ -206,8 +204,6 @@ var ObjectionModelGenerator = function () {
   _createClass(ObjectionModelGenerator, [{
     key: 'createModels',
     value: async function createModels(prefix) {
-      var _this = this;
-
       var dbName = this.dbName,
           dbFile = this.dbFile;
 
@@ -236,16 +232,11 @@ var ObjectionModelGenerator = function () {
         var modelName = singularize(table.TABLE_NAME);
         modelName = camelCase(modelName);
         modelName = capitalize(modelName);
-        if (_this.modelNameBuilder) {
-          modelName = _this.modelNameBuilder(modelName);
-        } else {
-          modelName += "Model";
-        }
         var constrains = [];
         var requireds = [];
         var searches = [];
         var data = {
-          modelName: modelName,
+          modelName: modelName + 'Model',
           tableName: table.TABLE_NAME,
           properties: table.columns.map(function (column) {
             constrains.push.apply(constrains, _toConsumableArray(cns.filter(function (cn) {
